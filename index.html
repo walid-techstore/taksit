@@ -34,7 +34,6 @@
     <input type="text" id="a" placeholder="المبلغ" oninput="formatInput(this); calc()">
     <input type="text" id="d" placeholder="الدفعة" oninput="formatInput(this); calc()">
 </div>
-تم توقيف منحة البطالة 2022 2023 2024
 <div class="main">
     <div class="card" id="r1"><h2>البطالة</h2><div id="unemp-box"></div></div>
     <div class="card" id="r2"><h2>موظف/متقاعد</h2><div class="grid" id="emp-box"></div></div>
@@ -57,19 +56,25 @@ function calc() {
     let d = parseFloat(document.getElementById('d').value.replace(/\s/g, '')) || 0;
     let rem = Math.max(0, a - d);
     
-    let unemp = [{n:"( :  بطالة  ) ( 3أشهر (%30)", m:3, limit:38000, x:1.3}, {n:"(مستفيد عام:25 26) 4أشهر (40%) ", m:4, limit:48000, x:1.4}];
+    let unemp = [{n:"(  بطالة  ) ( 3أشهر (%30)", m:3, limit:38000, x:1.3}, {n:"(مستفيد عام:25 26) 4أشهر (40%) ", m:4, limit:48000, x:1.4}];
     let emp = [{n:"(%26) 3أشهر", m:3, x:1.26}, {n:" (%38) 6أشهر", m:6, x:1.38}, {n:"(%53) 9أشهر", m:9, x:1.53}, {n:" (%68) 12شهر", m:12, x:1.68}, {n:"(%98) 18شهر ", m:18, x:1.98}];
     
     let h1="", h2="";
     unemp.forEach(o=>{
         let c = Math.max(0, rem - o.limit);
-        let t = Math.ceil((Math.min(rem, o.limit) * o.x) / 100) * 100;
-        h1+=`<div class='row'>${o.n}<br>الكاش: <span class='cash-val num'>${formatNum(c)}</span><br>الإجمالي: <span class='val num'>${formatNum(t)}</span><br>القسط: <span class='monthly-val num'>${formatNum(Math.ceil((t/o.m)/100)*100)}</span></div>`;
+        let base = Math.min(rem, o.limit) * o.x;
+        let unit = 100 * o.m;
+        let t = Math.floor(base / unit) * unit;
+        let installment = t / o.m;
+        h1+=`<div class='row'>${o.n}<br>الكاش: <span class='cash-val num'>${formatNum(c)}</span><br>الإجمالي: <span class='val num'>${formatNum(t)}</span><br>القسط: <span class='monthly-val num'>${formatNum(installment)}</span></div>`;
     });
     
     emp.forEach(o=>{
-        let v = Math.ceil((rem * o.x) / 100) * 100;
-        h2+=`<div class='row'>${o.n}<br>الإجمالي: <span class='val num'>${formatNum(v)}</span><br>القسط: <span class='monthly-val num'>${formatNum(Math.ceil((v/o.m)/100)*100)}</span></div>`;
+        let base = rem * o.x;
+        let unit = 100 * o.m;
+        let v = Math.floor(base / unit) * unit;
+        let installment = v / o.m;
+        h2+=`<div class='row'>${o.n}<br>الإجمالي: <span class='val num'>${formatNum(v)}</span><br>القسط: <span class='monthly-val num'>${formatNum(installment)}</span></div>`;
     });
     
     document.getElementById('unemp-box').innerHTML=h1;
