@@ -153,13 +153,11 @@ function calc() {
     let h2 = "";
 
     unemp.forEach(o => {
-        const c = Math.max(0, rem - o.limit);
-        const base = Math.min(rem, o.limit) * o.x;
-        const unit = 100 * o.m;
-        const total = Math.floor(base / unit) * unit;
-        const installment = o.m === 3
-    ? Math.ceil((total / o.m) / 100) * 100
-    : total / o.m;
+    const c = Math.max(0, rem - o.limit);
+    const base = Math.min(rem, o.limit) * o.x;
+    const unit = 100 * o.m;
+    const total = (o.m === 3 ? Math.ceil(base / unit) : Math.floor(base / unit)) * unit;
+    const installment = total / o.m;
 
         h1 += `<div class="row">${o.n}<br>
             الكاش: <span class="cash-val num">${formatNum(c)}</span><br>
