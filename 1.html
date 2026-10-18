@@ -251,7 +251,7 @@ function calc() {
 
 function updateTickerDate() {
     const now = new Date();
-    const accepted = new Date(now.getFullYear(), now.getMonth() - 17, 1);
+    const accepted = new Date(now.getFullYear(), now.getMonth() - 18, 1);
     const mm = String(accepted.getMonth() + 1).padStart(2, "0");
     const yyyy = accepted.getFullYear();
     const tickerSpan = document.getElementById("dynamicTickerText");
